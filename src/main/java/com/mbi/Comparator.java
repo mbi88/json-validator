@@ -1,14 +1,12 @@
 package com.mbi;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import static org.testng.Assert.assertEquals;
 
-/**
- * Created by mbi on 11/4/16.
- */
 class Comparator {
 
     /**

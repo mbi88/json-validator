@@ -1,18 +1,28 @@
 package com.mbi;
 
+import com.jayway.restassured.response.Response;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- * Created by mbi on 11/4/16.
- */
-public interface Validator {
+public class Validator {
 
-    /**
-     * ...
-     *
-     * @param schema   ...
-     * @param response ...
-     * @param <T>      ...
-     */
-    <T> void validate(JSONObject schema, T response);
+    public void validate(JSONObject schema, JSONObject jsonObject) {
+        AbstractValidator validator = new JsonObjectValidator();
+        validator.compareWithSchema(schema, jsonObject);
+    }
+
+    public void validate(JSONObject schema, JSONArray jsonArray) {
+        AbstractValidator validator = new JsonArrayValidator();
+        validator.compareWithSchema(schema, jsonArray);
+    }
+
+    public void validate(JSONObject schema, Response response) {
+        AbstractValidator validator = new ResponseValidator();
+        validator.compareWithSchema(schema, response);
+    }
+
+    public void validate(JSONObject schema, String string) {
+        AbstractValidator validator = new StringValidator();
+        validator.compareWithSchema(schema, string);
+    }
 }
