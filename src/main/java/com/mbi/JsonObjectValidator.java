@@ -6,7 +6,7 @@ class JsonObjectValidator implements Validator {
 
     @Override
     public <T> void compareWithSchema(JSONObject schema, T object) {
-        JSONObject jsonObject = new JSONObject(object.toString());
+        JSONObject jsonObject = (JSONObject) object;
         Comparator comparator = new Comparator();
         comparator.compareJsons(schema, jsonObject);
     }
