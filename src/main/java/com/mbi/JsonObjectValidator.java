@@ -2,7 +2,7 @@ package com.mbi;
 
 import org.json.JSONObject;
 
-class JsonObjectValidator implements AbstractValidator {
+class JsonObjectValidator implements Validator {
 
     @Override
     public <T> void compareWithSchema(JSONObject schema, T object) {

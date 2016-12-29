@@ -4,7 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-class StringValidator implements AbstractValidator {
+class StringValidator implements Validator {
 
     @Override
     public <T> void compareWithSchema(JSONObject schema, T object) {

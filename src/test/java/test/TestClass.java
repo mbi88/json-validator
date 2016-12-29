@@ -1,12 +1,12 @@
 package test;
 
-import com.mbi.Validator;
+import com.mbi.JsonValidator;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
 
 public class TestClass {
 
-    private Validator validator = new Validator();
+    private JsonValidator validator = new JsonValidator();
 
     @Test
     public void test1() {

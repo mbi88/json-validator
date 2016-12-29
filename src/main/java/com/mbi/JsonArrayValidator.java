@@ -3,7 +3,7 @@ package com.mbi;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-class JsonArrayValidator implements AbstractValidator {
+class JsonArrayValidator implements Validator {
 
     @Override
     public <T> void compareWithSchema(JSONObject schema, T object) {
