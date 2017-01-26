@@ -16,7 +16,9 @@ class Comparator {
      * @param response ...
      */
     void compareJsons(JSONObject schema, JSONObject response) {
+        // Compare schemas with response json object
         compare(schema, response, true);
+        // Compare vice versa
         compare(response, schema, false);
     }
 
@@ -25,62 +27,86 @@ class Comparator {
      *
      * @param schema          ...
      * @param response        ...
-     * @param acceptAllIfNull if true - comparing: {"a": null} with {"a": 1} is ok
+     * @param isSchemaFirstArg if true - comparing: {"a": null} with {"a": 1} is ok
      */
-    private void compare(JSONObject schema, JSONObject response, boolean acceptAllIfNull) {
+    private void compare(JSONObject schema, JSONObject response, boolean isSchemaFirstArg) {
+        // For each field in schema
         for (String schemaField : JSONObject.getNames(schema)) {
-            findField(schemaField, response);
-            compareValueType(schemaField, schema, response, acceptAllIfNull);
-            compareNestedJsons(schemaField, schema, response, acceptAllIfNull);
+            // Check schema field exists in response object
+            findField(schemaField, response, isSchemaFirstArg);
+            // Check schema field value type is equal to response's
+            compareValueType(schemaField, schema, response, isSchemaFirstArg);
+            // Compare nested JSON objects/arrays (if exist)
+            compareNestedJsons(schemaField, schema, response, isSchemaFirstArg);
         }
     }
 
     /**
      * ...
      *
-     * @param field ...
-     * @param json  ...
+     * @param schemaField ...
+     * @param response  ...
      */
-    private void findField(String field, JSONObject json) {
+    private void findField(String schemaField, JSONObject response, boolean isSchemaFirstArg) {
         try {
-            json.get(field);
+            // Try to find out if schema field exists in response json
+            response.get(schemaField);
         } catch (JSONException e) {
-            String errorMessage = ("Field is missing: ").concat(e.getMessage().substring(10));
-            throw new AssertionError(errorMessage);
+            String errorMessage;
+            if (isSchemaFirstArg) {
+                errorMessage = "Field is missing: ";
+            } else {
+                errorMessage = "Field is redundant: ";
+            }
+
+            throw new AssertionError(errorMessage.concat(e.getMessage().substring(10)));
         }
     }
 
     /**
      * ...
      *
-     * @param field           ...
+     * @param schemaField           ...
      * @param schema          ...
      * @param response        ...
-     * @param acceptAllIfNull ...
+     * @param isSchemaFirstArg ...
      */
-    private void compareValueType(String field, JSONObject schema, JSONObject response, boolean acceptAllIfNull) {
+    private void compareValueType(String schemaField, JSONObject schema, JSONObject response, boolean isSchemaFirstArg) {
+        // Do not compare vice versa option (if response object is the first arg)
+        if (!isSchemaFirstArg)
+            return;
+
         try {
-            if (acceptAllIfNull && !schema.get(field).getClass().getSimpleName().equalsIgnoreCase("null"))
-                assertEquals(schema.get(field).getClass(), response.get(field).getClass());
+            // Do assertion if schema field value is not null.
+            // Skipping null value for ability to make comparision like {"a": null} with {"a": 1}.
+            // Schema field "a" accepts all values of response field "a"
+            if (!getFieldValueClassName(schemaField, schema).equalsIgnoreCase("null"))
+                assertEquals(schema.get(schemaField).getClass(), response.get(schemaField).getClass());
         } catch (AssertionError assertionError) {
-            String errorMessage = field.concat(" has incorrect type: ").concat(assertionError.getMessage());
+            String errorMessage = schemaField.concat(" has incorrect type: ").concat(assertionError.getMessage());
             throw new AssertionError(errorMessage);
         }
     }
 
-    private void compareNestedJsons(String schemaField, JSONObject schema, JSONObject response, boolean acceptAllIfNull) {
-        compareNestedObjects(schemaField, schema, response, acceptAllIfNull);
-        compareNestedArrays(schemaField, schema, response, acceptAllIfNull);
+    private String getFieldValueClassName(String fieldName, JSONObject json) {
+        return json.get(fieldName).getClass().getSimpleName();
     }
 
-    private void compareNestedObjects(String schemaField, JSONObject schema, JSONObject response, boolean acceptAllIfNull) {
+    private void compareNestedJsons(String schemaField, JSONObject schema, JSONObject response, boolean isSchemaFirstArg) {
+        compareNestedObjects(schemaField, schema, response, isSchemaFirstArg);
+        compareNestedArrays(schemaField, schema, response, isSchemaFirstArg);
+    }
+
+    private void compareNestedObjects(String schemaField, JSONObject schema, JSONObject response, boolean isSchemaFirstArg) {
+        // Try to compare if objects have nested object
         try {
-            compare(schema.getJSONObject(schemaField), response.getJSONObject(schemaField), acceptAllIfNull);
+            compare(schema.getJSONObject(schemaField), response.getJSONObject(schemaField), isSchemaFirstArg);
         } catch (JSONException ignored) {
         }
     }
 
-    private void compareNestedArrays(String schemaField, JSONObject schema, JSONObject response, boolean acceptAllIfNull) {
+    private void compareNestedArrays(String schemaField, JSONObject schema, JSONObject response, boolean isSchemaFirstArg) {
+        // Try to compare if arrays have nested object
         try {
             JSONArray schemaArray = schema.getJSONArray(schemaField);
             JSONArray responseArray = response.getJSONArray(schemaField);
@@ -88,7 +114,7 @@ class Comparator {
                 JSONObject sJson = new JSONObject(so.toString());
                 for (Object ro : responseArray) {
                     JSONObject rJson = new JSONObject(ro.toString());
-                    compare(sJson, rJson, acceptAllIfNull);
+                    compare(sJson, rJson, isSchemaFirstArg);
                 }
             }
         } catch (JSONException ignored) {
