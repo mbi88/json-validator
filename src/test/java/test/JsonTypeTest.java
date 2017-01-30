@@ -295,7 +295,7 @@ public class JsonTypeTest {
         checkIsFailed(jsonObject1, jsonObject2);
     }
 
-    @Test/////////?
+    @Test
     public void testCompareObjectEmptySchema() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":{}}");
         JSONObject jsonObject2 = new JSONObject("{\"a\":{\"b\":\"asd\"}}");
@@ -351,7 +351,7 @@ public class JsonTypeTest {
         validator.validate(jsonObject1, jsonObject2);
     }
 
-    @Test/////////?
+    @Test
     public void testCompareObjectInArrayEmptySchema() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[{}]}");
         JSONObject jsonObject2 = new JSONObject("{\"a\":[{\"b\":\"asd\"}]}");

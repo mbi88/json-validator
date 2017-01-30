@@ -351,7 +351,7 @@ public class ArrayTypeTest {
         validator.validate(jsonObject1, jsonArray);
     }
 
-    @Test/////////?
+    @Test
     public void testCompareObjectInArrayEmptySchema() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[{}]}");
         JSONArray jsonArray = new JSONArray("[{\"a\":[{\"b\":\"asd\"}]}]");

@@ -92,12 +92,26 @@ class Comparator {
         return json.get(fieldName).getClass().getSimpleName();
     }
 
+    private boolean isEmptyJsonObject(JSONObject json, String field) {
+        return json.get(field).toString().equals("{}");
+    }
+
+    private boolean isEmptyJsonArray(JSONObject json, String field) {
+        return json.get(field).toString().equals("[]");
+    }
+
     private void compareNestedJsons(String schemaField, JSONObject schema, JSONObject response, boolean isSchemaFirstArg) {
         compareNestedObjects(schemaField, schema, response, isSchemaFirstArg);
         compareNestedArrays(schemaField, schema, response, isSchemaFirstArg);
     }
 
     private void compareNestedObjects(String schemaField, JSONObject schema, JSONObject response, boolean isSchemaFirstArg) {
+        // If schema looks like: {"a": {}} - skip comparing
+        if (isEmptyJsonObject(schema, schemaField) && isSchemaFirstArg)
+            return;
+        if (isEmptyJsonObject(response, schemaField) && !isSchemaFirstArg)
+            return;
+
         // Try to compare if objects have nested object
         try {
             compare(schema.getJSONObject(schemaField), response.getJSONObject(schemaField), isSchemaFirstArg);
@@ -111,10 +125,20 @@ class Comparator {
             JSONArray schemaArray = schema.getJSONArray(schemaField);
             JSONArray responseArray = response.getJSONArray(schemaField);
             for (Object so : schemaArray) {
-                JSONObject sJson = new JSONObject(so.toString());
+                JSONObject schemaJson = new JSONObject(so.toString());
+
+//                 If schema looks like: {"a": {}} - skip comparing
+//                if (isEmptyJsonObject(schemaJson, schemaField) && isSchemaFirstArg)
+//                    return;
+
                 for (Object ro : responseArray) {
-                    JSONObject rJson = new JSONObject(ro.toString());
-                    compare(sJson, rJson, isSchemaFirstArg);
+                    JSONObject responseJson = new JSONObject(ro.toString());
+
+//                    // If schema looks like: {"a": {}} - skip comparing
+//                    if (isEmptyJsonObject(responseJson, schemaField) && !isSchemaFirstArg)
+//                        return;
+//
+                    compare(schemaJson, responseJson, isSchemaFirstArg);
                 }
             }
         } catch (JSONException ignored) {
