@@ -25,8 +25,8 @@ class Comparator {
     /**
      * ...
      *
-     * @param schema          ...
-     * @param response        ...
+     * @param schema           ...
+     * @param response         ...
      * @param isSchemaFirstArg if true - comparing: {"a": null} with {"a": 1} is ok
      */
     private void compare(JSONObject schema, JSONObject response, boolean isSchemaFirstArg) {
@@ -45,7 +45,7 @@ class Comparator {
      * ...
      *
      * @param schemaField ...
-     * @param response  ...
+     * @param response    ...
      */
     private void findField(String schemaField, JSONObject response, boolean isSchemaFirstArg) {
         try {
@@ -66,9 +66,9 @@ class Comparator {
     /**
      * ...
      *
-     * @param schemaField           ...
-     * @param schema          ...
-     * @param response        ...
+     * @param schemaField      ...
+     * @param schema           ...
+     * @param response         ...
      * @param isSchemaFirstArg ...
      */
     private void compareValueType(String schemaField, JSONObject schema, JSONObject response, boolean isSchemaFirstArg) {
@@ -94,6 +94,10 @@ class Comparator {
 
     private boolean isEmptyJsonObject(JSONObject json, String field) {
         return json.get(field).toString().equals("{}");
+    }
+
+    private boolean isEmptyJsonObject(JSONObject json) {
+        return json.toString().equals("{}");
     }
 
     private boolean isEmptyJsonArray(JSONObject json, String field) {
@@ -127,17 +131,17 @@ class Comparator {
             for (Object so : schemaArray) {
                 JSONObject schemaJson = new JSONObject(so.toString());
 
-//                 If schema looks like: {"a": {}} - skip comparing
-//                if (isEmptyJsonObject(schemaJson, schemaField) && isSchemaFirstArg)
-//                    return;
+                // If schema looks like: {"a": [{}]} - skip comparing
+                if (isEmptyJsonObject(schemaJson) && isSchemaFirstArg)
+                    return;
 
                 for (Object ro : responseArray) {
                     JSONObject responseJson = new JSONObject(ro.toString());
 
-//                    // If schema looks like: {"a": {}} - skip comparing
-//                    if (isEmptyJsonObject(responseJson, schemaField) && !isSchemaFirstArg)
-//                        return;
-//
+                    // If schema looks like: {"a": [{}]} - skip comparing
+                    if (isEmptyJsonObject(responseJson) && !isSchemaFirstArg)
+                        return;
+
                     compare(schemaJson, responseJson, isSchemaFirstArg);
                 }
             }
