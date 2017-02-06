@@ -10,10 +10,10 @@ import static org.testng.Assert.assertEquals;
 class Comparator {
 
     /**
-     * ...
+     * Comparing schema and response json objects by all schema fields and by all response fields
      *
-     * @param schema   ...
-     * @param response ...
+     * @param schema   schema json object
+     * @param response response json object
      */
     void compareJsons(JSONObject schema, JSONObject response) {
         // Compare schemas with response json object
@@ -23,10 +23,11 @@ class Comparator {
     }
 
     /**
-     * ...
+     * Compare schema and response json objects. Consists of: finding all schema fields in response; comparing fields
+     * value types for schema and response objects for all schema fields; recursive comparing of nested jsons
      *
-     * @param schema           ...
-     * @param response         ...
+     * @param schema           schema json object
+     * @param response         response json object
      * @param isSchemaFirstArg if true - comparing: {"a": null} with {"a": 1} is ok
      */
     private void compare(JSONObject schema, JSONObject response, boolean isSchemaFirstArg) {
@@ -42,10 +43,11 @@ class Comparator {
     }
 
     /**
-     * ...
+     * Method to determine if passed field (schemaField) exists in response json object
      *
-     * @param schemaField ...
-     * @param response    ...
+     * @param schemaField      String schema field
+     * @param response         json object response
+     * @param isSchemaFirstArg true if compare schema with response json object (schema object is the 1st argument)
      */
     private void findField(String schemaField, JSONObject response, boolean isSchemaFirstArg) {
         try {
@@ -64,12 +66,12 @@ class Comparator {
     }
 
     /**
-     * ...
+     * Method to determine if schema's and response's value type of schemasField is equal
      *
-     * @param schemaField      ...
-     * @param schema           ...
-     * @param response         ...
-     * @param isSchemaFirstArg ...
+     * @param schemaField      schema field name to compare vale type
+     * @param schema           schema object
+     * @param response         response object
+     * @param isSchemaFirstArg true if compare schema with response json object (schema object is the 1st argument)
      */
     private void compareValueType(String schemaField, JSONObject schema, JSONObject response, boolean isSchemaFirstArg) {
         // Do not compare vice versa option (if response object is the first arg)
@@ -98,10 +100,6 @@ class Comparator {
 
     private boolean isEmptyJsonObject(JSONObject json) {
         return json.toString().equals("{}");
-    }
-
-    private boolean isEmptyJsonArray(JSONObject json, String field) {
-        return json.get(field).toString().equals("[]");
     }
 
     private void compareNestedJsons(String schemaField, JSONObject schema, JSONObject response, boolean isSchemaFirstArg) {

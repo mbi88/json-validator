@@ -345,10 +345,26 @@ public class ArrayTypeTest {
 
     @Test
     public void testCompareObjectInArrayFewObjectFields() {
-        JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"c\":\"y\"},{\"d\":45}]}");
-        JSONArray jsonArray = new JSONArray("[{\"a\":[{\"c\":\"y\"},{\"d\":16}]}]");
+        JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"c\":\"y\"},{\"c\":\"45\"}]}");
+        JSONArray jsonArray = new JSONArray("[{\"a\":[{\"c\":\"y\"},{\"c\":\"16\"}]}]");
 
         validator.validate(jsonObject1, jsonArray);
+    }
+
+    @Test
+    public void testCompareTwoObjectsInArrayWithDifferentFields() {
+        JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"c\":\"y\"},{\"d\":\"wd\"}]}");
+        JSONArray jsonArray = new JSONArray("[{\"a\":[{\"c\":\"y\"},{\"d\":\"ww\"}]}]");
+
+        checkIsFailed(jsonObject1, jsonArray);
+    }
+
+    @Test
+    public void testCompareTwoObjectsInArrayWithDifferentTypes() {
+        JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"c\":\"y\"},{\"c\":45}]}");
+        JSONArray jsonArray = new JSONArray("[{\"a\":[{\"c\":\"y\"},{\"c\":43}]}]");
+
+        checkIsFailed(jsonObject1, jsonArray);
     }
 
     @Test

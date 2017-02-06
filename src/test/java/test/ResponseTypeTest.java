@@ -345,12 +345,27 @@ public class ResponseTypeTest {
 
     @Test
     public void testCompareObjectInArrayFewObjectFields() {
-        JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"c\":\"y\"},{\"d\":45}]}");
-        Response jsonResponse = get("http://www.mocky.io/v2/5874f09b0f00008108ec8c7e"); //{"a":[{"c":"y"},{"d":45}]}
+        JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"c\":\"y\"},{\"c\":\"a\"}]}");
+        Response jsonResponse = get("http://www.mocky.io/v2/589845d411000037040389a7"); //{"a":[{"c":"y"},{"d":45}]}
 
         validator.validate(jsonObject1, jsonResponse);
     }
 
+    @Test
+    public void testCompareTwoObjectsInArrayWithDifferentFields() {
+        JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"c\":\"y\"},{\"d\":\"wd\"}]}");
+        Response jsonResponse = get("http://www.mocky.io/v2/5898474811000055040389b2"); //{"a":[{"c":"y"},{"d":"wd"}]}
+
+        checkIsFailed(jsonObject1, jsonResponse);
+    }
+
+    @Test
+    public void testCompareTwoObjectsInArrayWithDifferentTypes() {
+        JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"c\":\"y\"},{\"c\":45}]}");
+        Response jsonResponse = get("http://www.mocky.io/v2/5898478511000059040389b7"); //{"a":[{"c":"y"},{"c":45}]}
+
+        checkIsFailed(jsonObject1, jsonResponse);
+    }
 
     @Test/////////?
     public void testCompareObjectInArrayEmptySchema() {

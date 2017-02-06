@@ -345,8 +345,8 @@ public class JsonTypeTest {
 
     @Test
     public void testCompareObjectInArrayFewObjectFields() {
-        JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"c\":\"y\"},{\"d\":45}]}");
-        JSONObject jsonObject2 = new JSONObject("{\"a\":[{\"c\":\"y\"},{\"d\":45}]}");
+        JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"c\":\"y\"},{\"c\":\"ss\"}]}");
+        JSONObject jsonObject2 = new JSONObject("{\"a\":[{\"c\":\"y\"},{\"c\":\"aa\"}]}");
 
         validator.validate(jsonObject1, jsonObject2);
     }
