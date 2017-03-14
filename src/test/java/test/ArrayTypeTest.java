@@ -12,7 +12,6 @@ public class ArrayTypeTest {
 
     private JsonValidator validator = new JsonValidator();
 
-
     @Test
     public void testCompareCorrectType() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":1}");
@@ -68,7 +67,6 @@ public class ArrayTypeTest {
 
         checkIsFailed(jsonObject1, jsonArray);
     }
-
 
     @Test
     public void testCompareIncorrectNameField() {
@@ -126,7 +124,7 @@ public class ArrayTypeTest {
         validator.validate(jsonObject1, jsonArray);
     }
 
-    @Test////////?
+    @Test
     public void testCompareArrayIncorrectTypeField() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":\"1\",\"b\":[\"5\"]}");
         JSONArray jsonArray = new JSONArray("[{\"a\":\"1\",\"b\":[true]}]");
@@ -134,7 +132,7 @@ public class ArrayTypeTest {
         validator.validate(jsonObject1, jsonArray);
     }
 
-    @Test //////?
+    @Test
     public void testCompareArrayFewFields() {
         JSONObject jsonObject1 = new JSONObject("{\"b\":\"S@d.me\",\"c\":[1,3,\"qwe\"]}");
         JSONArray jsonArray = new JSONArray("[{\"b\":\"S@d.me\",\"c\":[566,\"qw\",12123]}]");
@@ -158,7 +156,7 @@ public class ArrayTypeTest {
         validator.validate(jsonObject1, jsonArray);
     }
 
-    @Test////////////?
+    @Test
     public void testCompareArrayTwoToOne() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[[\"c\",\"y\"],[1,45]]}");
         JSONArray jsonArray = new JSONArray("[{\"a\":[[\"c\",\"y\"]]}]");
@@ -166,7 +164,7 @@ public class ArrayTypeTest {
         validator.validate(jsonObject1, jsonArray);
     }
 
-    @Test   /////////////////?
+    @Test
     public void testCompareEmptyArraySchema() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[]}");
         JSONArray jsonArray = new JSONArray("[{\"a\":[1]}]");
@@ -174,7 +172,7 @@ public class ArrayTypeTest {
         validator.validate(jsonObject1, jsonArray);
     }
 
-    @Test   /////////////////?
+    @Test
     public void testCompareEmptyArrayArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[1]}");
         JSONArray jsonArray = new JSONArray("[{\"a\":[]}]");
@@ -199,7 +197,7 @@ public class ArrayTypeTest {
         validator.validate(jsonObject1, jsonArray);
     }
 
-    @Test ////////////?
+    @Test
     public void testCompareEmptyArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":{\"b\":1}}}");
         JSONArray jsonArray = new JSONArray("[{\"a\":{}}]");
@@ -279,7 +277,7 @@ public class ArrayTypeTest {
         checkIsFailed(jsonObject1, jsonArray);
     }
 
-    @Test ////////////?
+    @Test
     public void testCompareNestedFieldArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":{\"b\":1}}}");
         JSONArray jsonArray = new JSONArray("[{\"b\":1}]");
@@ -295,7 +293,7 @@ public class ArrayTypeTest {
         checkIsFailed(jsonObject1, jsonArray);
     }
 
-    @Test/////////?
+    @Test
     public void testCompareObjectEmptySchema() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":{}}");
         JSONArray jsonArray = new JSONArray("[{\"a\":{\"b\":\"asd\"}}]");
@@ -327,7 +325,7 @@ public class ArrayTypeTest {
         validator.validate(jsonObject1, jsonArray);
     }
 
-    @Test//////?
+    @Test
     public void testCompareObjectInArrayFieldNotObjectType() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"b\":\"asd\"}]}");
         JSONArray jsonArray = new JSONArray("[{\"a\":[5]}]");
@@ -392,7 +390,7 @@ public class ArrayTypeTest {
         checkIsFailed(jsonObject1, jsonArray);
     }
 
-    @Test/////////?
+    @Test
     public void testCompareObjectInArrayEmptyArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"b\":\"asd\"}]}");
         JSONArray jsonArray = new JSONArray("[{\"a\":[{}]}]");
@@ -480,7 +478,7 @@ public class ArrayTypeTest {
         checkIsFailed(jsonObject1, jsonArray);
     }
 
-    @Test ////////////?
+    @Test
     public void testCompareObjectInArrayNestedFieldArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"b\":1}]}");
         JSONArray jsonArray = new JSONArray("[{\"b\":1}]");

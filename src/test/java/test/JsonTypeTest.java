@@ -9,9 +9,7 @@ import org.testng.annotations.Test;
  */
 public class JsonTypeTest {
 
-
     private JsonValidator validator = new JsonValidator();
-
 
     @Test()
     public void testCompareCorrectType() {
@@ -126,7 +124,7 @@ public class JsonTypeTest {
         validator.validate(jsonObject1, jsonObject2);
     }
 
-    @Test ////////////?
+    @Test
     public void testCompareArrayIncorrectTypeField() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":\"1\",\"b\":[\"5\"]}");
         JSONObject jsonObject2 = new JSONObject("{\"a\":\"1\",\"b\":[true]}");
@@ -134,7 +132,7 @@ public class JsonTypeTest {
         validator.validate(jsonObject1, jsonObject2);
     }
 
-    @Test /////////?
+    @Test
     public void testCompareArrayFewFields() {
         JSONObject jsonObject1 = new JSONObject("{\"b\":\"S@d.me\",\"c\":[1,3,\"qwe\"]}");
         JSONObject jsonObject2 = new JSONObject("{\"b\":\"S@d.me\",\"c\":[566,\"qw\",12123]}");
@@ -158,7 +156,7 @@ public class JsonTypeTest {
         validator.validate(jsonObject1, jsonObject2);
     }
 
-    @Test////////////?
+    @Test
     public void testCompareArrayTwoToOne() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[[\"c\",\"y\"],[1,45]]}");
         JSONObject jsonObject2 = new JSONObject("{\"a\":[[\"c\",\"y\"]]}");
@@ -166,7 +164,7 @@ public class JsonTypeTest {
         validator.validate(jsonObject1, jsonObject2);
     }
 
-    @Test   /////////////////?
+    @Test
     public void testCompareEmptyArraySchema() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[]}");
         JSONObject jsonObject2 = new JSONObject("{\"a\":[1]}");
@@ -174,7 +172,7 @@ public class JsonTypeTest {
         validator.validate(jsonObject1, jsonObject2);
     }
 
-    @Test   /////////////////?
+    @Test
     public void testCompareEmptyArrayArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[1]}");
         JSONObject jsonObject2 = new JSONObject("{\"a\":[]}");
@@ -198,7 +196,7 @@ public class JsonTypeTest {
         validator.validate(jsonObject1, jsonObject2);
     }
 
-    @Test ////////////?
+    @Test
     public void testCompareEmptyArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":{\"b\":1}}}");
         JSONObject jsonObject2 = new JSONObject("{\"a\":{}}");
@@ -279,7 +277,7 @@ public class JsonTypeTest {
         checkIsFailed(jsonObject1, jsonObject2);
     }
 
-    @Test ////////////?
+    @Test
     public void testCompareNestedFieldArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":{\"b\":1}}}");
         JSONObject jsonObject2 = new JSONObject("{\"b\":1}");
@@ -327,7 +325,7 @@ public class JsonTypeTest {
         validator.validate(jsonObject1, jsonObject2);
     }
 
-    @Test//////////////?
+    @Test
     public void testCompareObjectInArrayFieldNotObjectType() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"b\":\"asd\"}]}");
         JSONObject jsonObject2 = new JSONObject("{\"a\":[5]}");
@@ -375,7 +373,7 @@ public class JsonTypeTest {
         checkIsFailed(jsonObject1, jsonObject2);
     }
 
-    @Test/////////?
+    @Test
     public void testCompareObjectInArrayEmptyArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"b\":\"asd\"}]}");
         JSONObject jsonObject2 = new JSONObject("{\"a\":[{}]}");
@@ -406,7 +404,6 @@ public class JsonTypeTest {
 
         checkIsFailed(jsonObject1, jsonObject2);
     }
-
 
     @Test
     public void testCompareObjectInArrayIncorrectTypeString() {
@@ -465,14 +462,13 @@ public class JsonTypeTest {
         checkIsFailed(jsonObject1, jsonObject2);
     }
 
-    @Test ////////////?
+    @Test
     public void testCompareObjectInArrayNestedFieldArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"b\":1}]}");
         JSONObject jsonObject2 = new JSONObject("{\"b\":1}");
 
         checkIsFailed(jsonObject1, jsonObject2);
     }
-
 
     private void checkIsFailed(JSONObject j1, JSONObject j2) {
         boolean failed = true;

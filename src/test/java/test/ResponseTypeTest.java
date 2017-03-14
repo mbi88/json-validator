@@ -11,6 +11,7 @@ import static com.jayway.restassured.RestAssured.get;
  * Created by solg on 11.01.2017.
  */
 public class ResponseTypeTest {
+
     private JsonValidator validator = new JsonValidator();
 
     @Test
@@ -126,7 +127,7 @@ public class ResponseTypeTest {
         validator.validate(jsonObject1, jsonResponse);
     }
 
-    @Test ////////////?
+    @Test
     public void testCompareArrayIncorrectTypeField() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":\"1\",\"b\":[true]}");
         Response jsonResponse = get("http://www.mocky.io/v2/5874e49e0f00007507ec8c50"); //{"a":"1","b":["qwerty"]}
@@ -134,7 +135,7 @@ public class ResponseTypeTest {
         validator.validate(jsonObject1, jsonResponse);
     }
 
-    @Test /////////?
+    @Test
     public void testCompareArrayFewFields() {
         JSONObject jsonObject1 = new JSONObject("{\"b\":\"S@d.me\",\"c\":[1,3,\"qwe\"]}");
         Response jsonResponse = get("http://www.mocky.io/v2/5874e58d0f00009807ec8c53"); //{"b":"S@d.me","c":[566,"qw",12123]}
@@ -166,7 +167,7 @@ public class ResponseTypeTest {
         validator.validate(jsonObject1, jsonResponse);
     }
 
-    @Test////////////?
+    @Test
     public void testCompareArrayTwoToOne() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[[\"c\",\"y\"],[1,45]]}");
         Response jsonResponse = get("http://www.mocky.io/v2/5874f1150f00009908ec8c80"); //{"a":[["c","y"]]}
@@ -174,7 +175,7 @@ public class ResponseTypeTest {
         validator.validate(jsonObject1, jsonResponse);
     }
 
-    @Test   /////////////////?
+    @Test
     public void testCompareEmptyArraySchema() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[]}");
         Response jsonResponse = get("http://www.mocky.io/v2/5874f1680f00008908ec8c81"); //{"a":[1]}
@@ -182,7 +183,7 @@ public class ResponseTypeTest {
         validator.validate(jsonObject1, jsonResponse);
     }
 
-    @Test   /////////////////?
+    @Test
     public void testCompareEmptyArrayArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[1]}");
         Response jsonResponse = get("http://www.mocky.io/v2/5874f17f0f0000a208ec8c83"); //{"a":[]}
@@ -214,14 +215,13 @@ public class ResponseTypeTest {
         validator.validate(jsonObject1, jsonResponse);
     }
 
-    @Test ////////////?
+    @Test
     public void testCompareEmptyArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":{\"b\":1}}}");
         Response jsonResponse = get("http://www.mocky.io/v2/5874f4410f0000d008ec8c8f"); //{"a":{}}
 
         checkIsFailed(jsonObject1, jsonResponse);
     }
-
 
     @Test
     public void testCompareObjectFieldIncorrectTypeInt() {
@@ -279,7 +279,7 @@ public class ResponseTypeTest {
         checkIsFailed(jsonObject1, jsonResponse);
     }
 
-    @Test ////////////?
+    @Test
     public void testCompareNestedFieldArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":{\"b\":1}}}");
         Response jsonResponse = get("http://www.mocky.io/v2/5874fa1f0f00003209ec8cb2"); //{"b":50}
@@ -295,7 +295,7 @@ public class ResponseTypeTest {
         checkIsFailed(jsonObject1, jsonResponse);
     }
 
-    @Test/////////?
+    @Test
     public void testCompareObjectEmptySchema() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":{}}");
         Response jsonResponse = get("http://www.mocky.io/v2/5874ea3a0f00000208ec8c63"); //{"a":{"b":50}}
@@ -327,7 +327,7 @@ public class ResponseTypeTest {
         validator.validate(jsonObject1, jsonResponse);
     }
 
-    @Test//////////////?
+    @Test
     public void testCompareObjectInArrayFieldNotObjectType() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"b\":\"asd\"}]}");
         Response jsonResponse = get("http://www.mocky.io/v2/5874ef340f00006608ec8c77"); //{"a":[5]}
@@ -367,7 +367,7 @@ public class ResponseTypeTest {
         checkIsFailed(jsonObject1, jsonResponse);
     }
 
-    @Test/////////?
+    @Test
     public void testCompareObjectInArrayEmptySchema() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[{}]}");
         Response jsonResponse = get("http://www.mocky.io/v2/5874f0190f00008008ec8c7c"); //{"a":[{"b":"asd"}]}
@@ -392,7 +392,7 @@ public class ResponseTypeTest {
         checkIsFailed(jsonObject1, jsonResponse);
     }
 
-    @Test/////////?
+    @Test
     public void testCompareObjectInArrayEmptyArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"b\":\"asd\"}]}");
         Response jsonResponse = get("http://www.mocky.io/v2/5874faff0f00005209ec8cb6");//{"a":[{}]}
@@ -481,14 +481,13 @@ public class ResponseTypeTest {
         checkIsFailed(jsonObject1, jsonResponse);
     }
 
-    @Test ////////////?
+    @Test
     public void testCompareObjectInArrayNestedFieldArg2() {
         JSONObject jsonObject1 = new JSONObject("{\"a\":[{\"b\":1}]}");
         Response jsonResponse = get("http://www.mocky.io/v2/5874fd8b0f00009e09ec8cbf"); //{"b":1}
 
         checkIsFailed(jsonObject1, jsonResponse);
     }
-
 
     private void checkIsFailed(JSONObject j1, Response j2) {
         boolean failed = true;
