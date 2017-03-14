@@ -8,7 +8,7 @@ import org.json.JSONObject;
 public class JsonValidator {
 
     /**
-     * Method to compare JSONObject schemas with JSONObject
+     * Method to compare JSONObject schema with JSONObject
      *
      * @param _schema     JSONObject schema
      * @param _jsonObject JSONObject to compare
@@ -20,7 +20,7 @@ public class JsonValidator {
     }
 
     /**
-     * Method to compare JSONObject schemas with JSONArray
+     * Method to compare JSONObject schema with JSONArray
      *
      * @param _schema    JSONObject schema
      * @param _jsonArray JSONArray to compare
@@ -28,8 +28,7 @@ public class JsonValidator {
     public void validate(JSONObject _schema, JSONArray _jsonArray) {
         Validator<JSONArray> validator = (schema, jsonArray) -> {
             for (Object o : jsonArray) {
-                Comparator comparator = new Comparator();
-                comparator.compareJsons(schema, new JSONObject(o.toString()));
+                new Comparator().compareJsons(schema, new JSONObject(o.toString()));
             }
         };
 
@@ -37,7 +36,7 @@ public class JsonValidator {
     }
 
     /**
-     * Method to compare JSONObject schemas with rest-assured response
+     * Method to compare JSONObject schema with rest-assured response
      *
      * @param _schema   JSONObject schema
      * @param _response rest-assured response object to compare
@@ -57,7 +56,7 @@ public class JsonValidator {
     }
 
     /**
-     * Method to compare JSONObject schemas with String
+     * Method to compare JSONObject schema with String
      *
      * @param _schema JSONObject schema
      * @param _string string object to compare
