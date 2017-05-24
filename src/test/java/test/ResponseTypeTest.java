@@ -1,11 +1,11 @@
 package test;
 
-import com.jayway.restassured.response.Response;
 import com.mbi.JsonValidator;
+import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
 
-import static com.jayway.restassured.RestAssured.get;
+import static io.restassured.RestAssured.get;
 
 /**
  * Created by solg on 11.01.2017.
