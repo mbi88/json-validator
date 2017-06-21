@@ -14,7 +14,8 @@ public class JsonValidator {
      * @param _jsonObject JSONObject to compare
      */
     public void validate(JSONObject _schema, JSONObject _jsonObject) {
-        Validator<JSONObject> validator = (schema, jsonObject) -> new Comparator().compareJsons(schema, jsonObject);
+        Validator<JSONObject> validator = (schema, jsonObject) -> new SchemaValidator().validateSchema(schema,
+                jsonObject);
 
         validator.compareWithSchema(_schema, _jsonObject);
     }
@@ -28,7 +29,7 @@ public class JsonValidator {
     public void validate(JSONObject _schema, JSONArray _jsonArray) {
         Validator<JSONArray> validator = (schema, jsonArray) -> {
             for (Object o : jsonArray) {
-                new Comparator().compareJsons(schema, new JSONObject(o.toString()));
+                new SchemaValidator().validateSchema(schema, new JSONObject(o.toString()));
             }
         };
 
