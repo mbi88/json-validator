@@ -14,8 +14,7 @@ public class JsonValidator {
      * @param _jsonObject JSONObject to compare
      */
     public void validate(JSONObject _schema, JSONObject _jsonObject) {
-        Validator<JSONObject> validator = (schema, jsonObject) -> new SchemaValidator().validateSchema(schema,
-                jsonObject);
+        Validator<JSONObject> validator = new SchemaValidator()::validateSchema;
 
         validator.compareWithSchema(_schema, _jsonObject);
     }
