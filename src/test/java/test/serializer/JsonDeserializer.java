@@ -1,14 +1,13 @@
 package test.serializer;
 
 
-import org.apache.maven.surefire.shade.org.apache.maven.shared.utils.io.IOUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 public class JsonDeserializer {
@@ -24,10 +23,8 @@ public class JsonDeserializer {
         JSONObject json = new JSONObject();
 
         try {
-            File file = new File(JsonDeserializer.class.getResource(path).toURI());
-            FileInputStream fis = new FileInputStream(file);
-            String string = IOUtil.toString(fis, "UTF-8");
-            json = new JSONObject(string);
+            String s = new String(Files.readAllBytes(Paths.get(JsonDeserializer.class.getResource(path).toURI())));
+            json = new JSONObject(s);
         } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
         }
@@ -35,14 +32,19 @@ public class JsonDeserializer {
         return json;
     }
 
+    /**
+     * Method to read a data from file from passed path and return Json array.
+     *
+     * @param path Path to the file with data. No need to add "src/main/resources" every time when you pass the path -
+     *             it is already implemented in the method.
+     * @return Json array
+     */
     public static JSONArray getJsonArrayFromFile(String path) {
         JSONArray json = new JSONArray();
 
         try {
-            File file = new File(JsonDeserializer.class.getResource(path).toURI());
-            FileInputStream fis = new FileInputStream(file);
-            String string = IOUtil.toString(fis, "UTF-8");
-            json = new JSONArray(string);
+            String s = new String(Files.readAllBytes(Paths.get(JsonDeserializer.class.getResource(path).toURI())));
+            json = new JSONArray(s);
         } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
         }
