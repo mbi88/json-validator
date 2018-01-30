@@ -8,7 +8,20 @@ import org.json.JSONObject;
 class SchemaValidator {
     void validateSchema(JSONObject schemaJson, JSONObject jsonObject) {
         Schema schema = getSchema(schemaJson);
-        schema.validate(jsonObject);
+        try {
+            schema.validate(jsonObject);
+        } catch (ValidationException ve) {
+            // Add error message
+            String msg = ve.getMessage();
+            // Add all violations
+            for (String s : ve.getAllMessages()) {
+                msg = msg.concat("\n" + s);
+            }
+            // Add object
+            msg = msg.concat("\n\nResponse: " + jsonObject.toString(2));
+
+            throw new ValidationException(ve.getViolatedSchema(), msg, ve.getKeyword());
+        }
     }
 
     private Schema getSchema(JSONObject schemaJson) {
