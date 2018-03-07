@@ -27,10 +27,10 @@ class SchemaValidator {
     private Schema getSchema(JSONObject schemaJson) {
         Schema schema = SchemaLoader.load(schemaJson);
 
-        if (schema.toString().equalsIgnoreCase("{}")) {
+        if (schemaJson.toString().equalsIgnoreCase("{}")) {
             String message = ("Invalid schema!\n")
                     .concat("Schema:\n")
-                    .concat(schema.toString());
+                    .concat(schemaJson.toString());
 
             throw new ValidationException(schema, message, "$schema");
         }

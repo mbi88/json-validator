@@ -110,8 +110,8 @@ public class JsonValidatorTest extends TestHelper {
     }
 
     @Test
-    public void tesEmptySchemaFailed() {
-        JSONObject j1 = new JSONObject("{\"a\":1}");
+    public void testEmptySchemaFailed() {
+        JSONObject j1 = new JSONObject("{}");
         JSONObject j2 = new JSONObject("{\"a\":1}");
 
         checkFail(j1, j2);
