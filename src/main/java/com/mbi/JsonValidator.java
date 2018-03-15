@@ -11,11 +11,11 @@ import static com.mbi.Constants.*;
 
 /**
  * Based on <a href="https://github.com/everit-org/json-schema">JSON Schema Validator</a>.
- * Validates json-schema with something of:
- * - {@link org.json.JSONObject},
- * - {@link org.json.JSONArray},
- * - {@link io.restassured.response.Response},
- * - {@link java.lang.String}
+ * Validates json schema with something of:
+ * {@link org.json.JSONObject},
+ * {@link org.json.JSONArray},
+ * {@link io.restassured.response.Response},
+ * {@link java.lang.String}
  *
  * @see <a href="http://json-schema.org/">What is json schema</a>
  * @see <a href="https://jsonschema.net/">Where can I create schemas</a>
