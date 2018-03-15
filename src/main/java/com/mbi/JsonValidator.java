@@ -5,73 +5,125 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class JsonValidator {
+import java.util.Objects;
+
+import static com.mbi.Constants.*;
+
+/**
+ * Based on <a href="https://github.com/everit-org/json-schema">JSON Schema Validator</a>.
+ * Validates json-schema with something of:
+ * - {@link org.json.JSONObject},
+ * - {@link org.json.JSONArray},
+ * - {@link io.restassured.response.Response},
+ * - {@link java.lang.String}
+ *
+ * @see <a href="http://json-schema.org/">What is json schema</a>
+ * @see <a href="https://jsonschema.net/">Where can I create schemas</a>
+ * @see <a href="https://github.com/everit-org/json-schema">JSON Schema Validator</a>
+ */
+public final class JsonValidator {
 
     /**
-     * Method to compare JSONObject schema with JSONObject
+     * Validates {@link org.json.JSONObject} according to json schema.
      *
-     * @param _schema     JSONObject schema
-     * @param _jsonObject JSONObject to compare
+     * @param schema schema.
+     * @param json   JSONObject to compare.
+     * @throws AssertionError if null passed
      */
-    public void validate(JSONObject _schema, JSONObject _jsonObject) {
-        Validator<JSONObject> validator = new SchemaValidator()::validateSchema;
+    public void validate(final JSONObject schema, final JSONObject json) {
+        assert !Objects.isNull(schema) : JSON_SCHEMA_NULL_ERROR_MESSAGE;
+        assert !Objects.isNull(json) : VALIDATION_JSON_NULL_ERROR_MESSAGE;
 
-        validator.compareWithSchema(_schema, _jsonObject);
+        final Comparator<JSONObject> comparator = new SchemaValidator()::validateSchema;
+
+        comparator.compareWithSchema(schema, json);
     }
 
     /**
-     * Method to compare JSONObject schema with JSONArray
+     * Validates {@link org.json.JSONArray} according to json schema.
      *
-     * @param _schema    JSONObject schema
-     * @param _jsonArray JSONArray to compare
+     * @param schema schema.
+     * @param json   JSONArray to compare.
+     * @throws AssertionError if null passed
      */
-    public void validate(JSONObject _schema, JSONArray _jsonArray) {
-        Validator<JSONArray> validator = (schema, jsonArray) -> {
-            for (Object o : jsonArray) {
-                new SchemaValidator().validateSchema(schema, new JSONObject(o.toString()));
-            }
-        };
+    public void validate(final JSONObject schema, final JSONArray json) {
+        assert !Objects.isNull(schema) : JSON_SCHEMA_NULL_ERROR_MESSAGE;
+        assert !Objects.isNull(json) : VALIDATION_JSON_NULL_ERROR_MESSAGE;
 
-        validator.compareWithSchema(_schema, _jsonArray);
+        final Comparator<JSONArray> comparator = new SchemaValidator()::validateSchema;
+
+        comparator.compareWithSchema(schema, json);
     }
 
     /**
-     * Method to compare JSONObject schema with rest-assured response
+     * Validates {@link io.restassured.response.Response} according to json schema.
+     * Converts rest-assured response to JSONObject/JSONArray. Throws JSONException if conversion fails.
      *
-     * @param _schema   JSONObject schema
-     * @param _response rest-assured response object to compare
+     * @param schema   schema.
+     * @param response rest-assured response to compare.
+     * @throws JSONException  if json is invalid.
+     * @throws AssertionError if null passed
      */
-    public void validate(JSONObject _schema, Response _response) {
-        Validator<Response> validator = (schema, response) -> {
-            if (response.asString().startsWith("{")) {
-                validate(schema, new JSONObject(response.asString()));
-            } else if (response.asString().startsWith("[")) {
-                validate(schema, new JSONArray(response.asString()));
+    public void validate(final JSONObject schema, final Response response) {
+        assert !Objects.isNull(schema) : JSON_SCHEMA_NULL_ERROR_MESSAGE;
+        assert !Objects.isNull(response) : VALIDATION_JSON_NULL_ERROR_MESSAGE;
+
+        final Comparator<Response> comparator = (schm, rsp) -> {
+            if (isJsonObject(rsp.asString())) {
+                validate(schm, new JSONObject(rsp.asString()));
+            } else if (isJsonArray(rsp.asString())) {
+                validate(schm, new JSONArray(rsp.asString()));
             } else {
-                throw new JSONException("Invalid json: " + response.asString());
+                throw new JSONException(INVALID_JSON_ERROR_MESSAGE + rsp.asString());
             }
         };
 
-        validator.compareWithSchema(_schema, _response);
+        comparator.compareWithSchema(schema, response);
     }
 
     /**
-     * Method to compare JSONObject schema with String
+     * Validates {@link java.lang.String} according to json schema.
+     * Converts string to JSONObject/JSONArray. Throws JSONException if conversion fails.
      *
-     * @param _schema JSONObject schema
-     * @param _string string object to compare
+     * @param schema schema.
+     * @param string string to compare.
+     * @throws JSONException  if json is invalid.
+     * @throws AssertionError if null passed
      */
-    public void validate(JSONObject _schema, String _string) {
-        Validator<String> validator = (schema, string) -> {
-            if (string.startsWith("{")) {
-                validate(schema, new JSONObject(string));
-            } else if (string.startsWith("[")) {
-                validate(schema, new JSONArray(string));
+    public void validate(final JSONObject schema, final String string) {
+        assert !Objects.isNull(schema) : JSON_SCHEMA_NULL_ERROR_MESSAGE;
+        assert !Objects.isNull(string) : VALIDATION_JSON_NULL_ERROR_MESSAGE;
+
+        final Comparator<String> comparator = (schm, str) -> {
+            if (isJsonObject(str)) {
+                validate(schm, new JSONObject(str));
+            } else if (isJsonArray(str)) {
+                validate(schm, new JSONArray(str));
             } else {
-                throw new JSONException("Invalid json: " + string);
+                throw new JSONException(INVALID_JSON_ERROR_MESSAGE + str);
             }
         };
 
-        validator.compareWithSchema(_schema, _string);
+        comparator.compareWithSchema(schema, string);
+    }
+
+    /**
+     * If passed json as string is json object.
+     *
+     * @param s json as string
+     * @return true is json object was passed.
+     */
+    private boolean isJsonObject(final String s) {
+        return s.startsWith("{");
+    }
+
+    /**
+     * If passed json as string is json array.
+     *
+     * @param s json as string
+     * @return true is json array was passed.
+     */
+    private boolean isJsonArray(final String s) {
+        return s.startsWith("[");
     }
 }

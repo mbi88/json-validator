@@ -13,7 +13,6 @@ public class DataProviders {
     static Object[][] getSuccessValidationData() {
         return new Object[][]{
                 {getJsonFromFile("/jsons/success_validation_jo.json")},
-                {getJsonArrayFromFile("/jsons/success_validation_ja.json")},
                 {get("http://www.mocky.io/v2/594a38f710000028021aa3a1")},
                 {"{\"a\": 1,\"b\": null,\"c\": \"1\",\"d\": [],\"e\": {},\"f\": [{\"aa\": 1},{\"aa\": 2}],\"g\": {\"aa\": 1,\"bb\": {\"aaa\": 1}}}"}
         };
@@ -33,7 +32,6 @@ public class DataProviders {
     static Object[][] getNullPropertySuccessData() {
         return new Object[][]{
                 {getJsonFromFile("/jsons/null_property_success_jo.json")},
-                {getJsonArrayFromFile("/jsons/null_property_success_ja.json")},
                 {get("http://www.mocky.io/v2/594a3bd41000006c021aa3ad")},
                 {"{\"a\":1,\"b\":\"a\",\"c\":\"1\",\"d\":[],\"e\":{},\"f\":[{\"aa\":1},{\"aa\":2}],\"g\":{\"aa\":1,\"bb\":{\"aaa\":1}}}"}
         };
@@ -53,7 +51,6 @@ public class DataProviders {
     static Object[][] getEmptyObjectData() {
         return new Object[][]{
                 {getJsonFromFile("/jsons/empty_object_jo.json")},
-                {getJsonArrayFromFile("/jsons/empty_object_ja.json")},
                 {get("http://www.mocky.io/v2/594a3ec1100000a4021aa3b4")},
                 {"{\"a\":1,\"b\":null,\"c\":\"1\",\"d\":[],\"e\":{\"a\":1},\"f\":[{\"aa\":1},{\"aa\":2}],\"g\":{\"aa\":1,\"bb\":{\"aaa\":1}}}"}
         };
@@ -62,7 +59,6 @@ public class DataProviders {
     @DataProvider(name = "EmptyArray")
     static Object[][] getEmptyArrayData() {
         return new Object[][]{
-                {getJsonFromFile("/jsons/empty_array_jo.json")},
                 {getJsonArrayFromFile("/jsons/empty_array_ja.json")},
                 {get("http://www.mocky.io/v2/594a409c100000c0021aa3c7")},
                 {"[{\"a\":1,\"b\":null,\"c\":\"1\",\"d\":[1],\"e\":{},\"f\":[{\"aa\":1},{\"aa\":2}],\"g\":{\"aa\":1,\"bb\":{\"aaa\":1}}},{\"a\":1,\"b\":null,\"c\":\"1\",\"d\":[1],\"e\":{},\"f\":[{\"aa\":1},{\"aa\":2}],\"g\":{\"aa\":1,\"bb\":{\"aaa\":1}}}]"}
@@ -72,10 +68,9 @@ public class DataProviders {
     @DataProvider(name = "ValidateArray")
     static Object[][] getValidateArrayData() {
         return new Object[][]{
-                {getJsonFromFile("/jsons/validate_array_jo.json")},
                 {getJsonArrayFromFile("/jsons/validate_array_ja.json")},
-                {get("http://www.mocky.io/v2/594a403c100000c2021aa3c5")},
-                {"{\"a\":1,\"b\":null,\"c\":\"1\",\"d\":[],\"e\":{},\"f\":[{\"aa\":1}],\"g\":{\"aa\":1,\"bb\":{\"aaa\":1}}}"}
+                {get("http://www.mocky.io/v2/5aaa7729330000bb082da97e")},
+                {"[\n  {\n\"a\": 1,\n\"b\": null,\n\"c\": \"1\",\n\"d\": [],\n\"e\": {},\n\"f\": [\n{\n\"aa\": 1\n}\n],\n\"g\": {\n\"aa\": 1,\n\"bb\": {\n\"aaa\": 1\n}\n}\n},\n{\n\"a\": 2,\n\"b\": null,\n\"c\": \"1\",\n\"d\": [],\n\"e\": {},\n\"f\": [\n{\n\"aa\": 1\n}\n],\n\"g\": {\n\"aa\": 1,\n\"bb\": {\n\"aaa\": 1\n}\n}\n}\n]"}
         };
     }
 
@@ -206,6 +201,14 @@ public class DataProviders {
                 {getJsonArrayFromFile("/jsons/array_has_invalid_object_ja.json")},
                 {get("http://www.mocky.io/v2/594a9a9e100000800a1aa54f")},
                 {"[{\"a\":1,\"b\":null,\"c\":\"1\",\"d\":[],\"e\":{},\"f\":[{\"aa\":1},{\"aa\":2}],\"g\":{\"aa\":1,\"bb\":{\"aaa\":1}}},{\"a\":1,\"b\":null,\"c\":\"1\",\"d\":[],\"e\":{},\"f\":[{\"aa\":1},{\"bb\":2}],\"g\":{\"aa\":1,\"bb\":{\"aaa\":1}}}]"}
+        };
+    }
+
+    @DataProvider(name = "InvalidJson")
+    static Object[][] getInvalidJson() {
+        return new Object[][]{
+                {get("http://www.mocky.io/v2/5aaa6e1d330000bd082da94a")},
+                {"123"}
         };
     }
 }

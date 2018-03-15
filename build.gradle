@@ -1,0 +1,61 @@
+plugins {
+    id 'ru.vyarus.quality' version '2.4.0'
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'jacoco'
+
+group = 'com.mbi'
+version = '2.0'
+
+description = """"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    maven { url "https://jitpack.io" }
+    maven { url "http://repo.maven.apache.org/maven2" }
+}
+
+dependencies {
+    compile group: 'org.json', name: 'json', version: '20180130'
+    compile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
+    compile group: 'org.testng', name: 'testng', version: '6.14.2'
+    compile group: 'com.github.everit-org.json-schema', name: 'org.everit.json.schema', version: '1.8.0'
+}
+
+test {
+    useTestNG() {
+    }
+}
+
+jacocoTestReport {
+    group = "Reporting"
+    reports {
+        html.setDestination(new File("${buildDir}/reports/coverage"))
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+quality {
+    checkstyle = true
+    pmd = false
+    findbugs = true
+    codenarc = true
+}

@@ -3,38 +3,68 @@ package com.mbi;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-class SchemaValidator {
-    void validateSchema(JSONObject schemaJson, JSONObject jsonObject) {
-        Schema schema = getSchema(schemaJson);
-        try {
-            schema.validate(jsonObject);
-        } catch (ValidationException ve) {
-            // Add error message
-            String msg = ve.getMessage();
-            // Add all violations
-            for (String s : ve.getAllMessages()) {
-                msg = msg.concat("\n" + s);
-            }
-            // Add object
-            msg = msg.concat("\n\nResponse: " + jsonObject.toString(2));
+/**
+ * Validates json data according to json schema.
+ */
+final class SchemaValidator {
 
-            throw new ValidationException(ve.getViolatedSchema(), msg, ve.getKeyword());
+    /**
+     * Validates json data.
+     *
+     * @param schema     json schema.
+     * @param jsonObject json object.
+     */
+    void validateSchema(final JSONObject schema, final JSONObject jsonObject) {
+        validate(schema, jsonObject);
+    }
+
+    /**
+     * Validates json data.
+     *
+     * @param schema    json schema.
+     * @param jsonArray json array.
+     */
+    void validateSchema(final JSONObject schema, final JSONArray jsonArray) {
+        validate(schema, jsonArray);
+    }
+
+    /**
+     * Validates json data. Throws exception if validation failed.
+     *
+     * @param schemaJson json schema.
+     * @param json       object to validate.
+     * @param <T>        {@link org.json.JSONObject} or {@link org.json.JSONArray}.
+     * @throws ValidationException if validation failed.
+     */
+    private <T> void validate(final JSONObject schemaJson, final T json) {
+        final Schema schema = getSchema(schemaJson);
+        try {
+            schema.validate(json);
+        } catch (ValidationException ve) {
+            final String msg = new ExceptionMessageCompositor().getMessage(ve, json);
+
+            throw new ValidationException(ve.getViolatedSchema(), msg, ve.getKeyword(), ve.getSchemaLocation());
         }
     }
 
-    private Schema getSchema(JSONObject schemaJson) {
-        Schema schema = SchemaLoader.load(schemaJson);
+    /**
+     * Reads json schema to schema validator object.
+     *
+     * @param schemaJson json schema
+     * @return schema validator
+     * @throws JSONException if schema is incorrect
+     */
+    private Schema getSchema(final JSONObject schemaJson) {
+        if (schemaJson.toString().equalsIgnoreCase("{}") || !schemaJson.toString().startsWith("{")) {
+            final String message = String.format("Invalid schema!%nSchema:%n%s", schemaJson.toString(4));
 
-        if (schemaJson.toString().equalsIgnoreCase("{}")) {
-            String message = ("Invalid schema!\n")
-                    .concat("Schema:\n")
-                    .concat(schemaJson.toString());
-
-            throw new ValidationException(schema, message, "$schema");
+            throw new JSONException(message);
         }
 
-        return schema;
+        return SchemaLoader.load(schemaJson);
     }
 }

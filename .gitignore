@@ -1,4 +1,11 @@
-target/
+# Idea
 .idea/
 *.iml
 
+# Maven
+target/
+
+# Gradle
+.gradle/
+out/
+build/
