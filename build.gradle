@@ -1,3 +1,5 @@
+import groovy.io.FileType
+
 plugins {
     id 'ru.vyarus.quality' version '2.4.0'
 }
@@ -14,6 +16,8 @@ description = """"""
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+def suitesDir = 'src/test/resources/suites/'
+
 repositories {
     maven { url "https://jitpack.io" }
     maven { url "http://repo.maven.apache.org/maven2" }
@@ -28,13 +32,25 @@ dependencies {
 
 test {
     useTestNG() {
+        // Add test suites
+        def suitesList = []
+        def dir = new File(suitesDir)
+        dir.eachFileRecurse(FileType.FILES) { file -> suitesList << file }
+        suitesList.each { options.suites(it.path) }
+
+        testLogging {
+            events "passed", "skipped", "failed"
+            exceptionFormat = 'full'
+            showStandardStreams = true
+        }
     }
 }
 
 jacocoTestReport {
-    group = "Reporting"
     reports {
-        html.setDestination(new File("${buildDir}/reports/coverage"))
+        xml.enabled true
+        html.enabled true
+        html.destination file("${buildDir}/reports/coverage")
     }
 }
 
@@ -59,3 +75,5 @@ quality {
     findbugs = true
     codenarc = true
 }
+
+check.dependsOn jacocoTestReport

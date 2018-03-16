@@ -46,7 +46,6 @@ public class JsonValidatorTest extends TestHelper {
 
     @Test(dataProvider = "ValidateArray", dataProviderClass = DataProviders.class)
     public void testValidateArray(Object o) {
-        System.out.println("!"+o.toString());
         checkSuccess(schemaJsonArray, o);
     }
 
