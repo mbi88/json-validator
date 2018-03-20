@@ -179,8 +179,4 @@ public class JsonValidatorTest extends TestHelper {
     public void testInvalidJsonFailed(Object o) {
         checkFail(schemaJsonObject, o);
     }
-
-    @Test
-    public void testN() {
-    }
 }
