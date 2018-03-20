@@ -1,11 +1,10 @@
 package com.mbi;
 
 import io.restassured.response.Response;
+import org.apache.commons.lang3.Validate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Objects;
 
 import static com.mbi.Constants.*;
 
@@ -31,8 +30,8 @@ public final class JsonValidator {
      * @throws AssertionError if null passed
      */
     public void validate(final JSONObject schema, final JSONObject json) {
-        assert !Objects.isNull(schema) : JSON_SCHEMA_NULL_ERROR_MESSAGE;
-        assert !Objects.isNull(json) : VALIDATION_JSON_NULL_ERROR_MESSAGE;
+        Validate.notNull(schema, JSON_SCHEMA_NULL_ERROR_MESSAGE);
+        Validate.notNull(json, VALIDATION_JSON_NULL_ERROR_MESSAGE);
 
         final Comparator<JSONObject> comparator = new SchemaValidator()::validateSchema;
 
@@ -47,8 +46,8 @@ public final class JsonValidator {
      * @throws AssertionError if null passed
      */
     public void validate(final JSONObject schema, final JSONArray json) {
-        assert !Objects.isNull(schema) : JSON_SCHEMA_NULL_ERROR_MESSAGE;
-        assert !Objects.isNull(json) : VALIDATION_JSON_NULL_ERROR_MESSAGE;
+        Validate.notNull(schema, JSON_SCHEMA_NULL_ERROR_MESSAGE);
+        Validate.notNull(json, VALIDATION_JSON_NULL_ERROR_MESSAGE);
 
         final Comparator<JSONArray> comparator = new SchemaValidator()::validateSchema;
 
@@ -65,8 +64,8 @@ public final class JsonValidator {
      * @throws AssertionError if null passed
      */
     public void validate(final JSONObject schema, final Response response) {
-        assert !Objects.isNull(schema) : JSON_SCHEMA_NULL_ERROR_MESSAGE;
-        assert !Objects.isNull(response) : VALIDATION_JSON_NULL_ERROR_MESSAGE;
+        Validate.notNull(schema, JSON_SCHEMA_NULL_ERROR_MESSAGE);
+        Validate.notNull(response, VALIDATION_JSON_NULL_ERROR_MESSAGE);
 
         final Comparator<Response> comparator = (schm, rsp) -> {
             if (isJsonObject(rsp.asString())) {
@@ -91,8 +90,8 @@ public final class JsonValidator {
      * @throws AssertionError if null passed
      */
     public void validate(final JSONObject schema, final String string) {
-        assert !Objects.isNull(schema) : JSON_SCHEMA_NULL_ERROR_MESSAGE;
-        assert !Objects.isNull(string) : VALIDATION_JSON_NULL_ERROR_MESSAGE;
+        Validate.notNull(schema, JSON_SCHEMA_NULL_ERROR_MESSAGE);
+        Validate.notNull(string, VALIDATION_JSON_NULL_ERROR_MESSAGE);
 
         final Comparator<String> comparator = (schm, str) -> {
             if (isJsonObject(str)) {

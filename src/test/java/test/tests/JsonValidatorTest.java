@@ -135,7 +135,7 @@ public class JsonValidatorTest extends TestHelper {
         boolean failed = true;
         try {
             checkSuccess(null, o);
-        } catch (AssertionError e) {
+        } catch (NullPointerException e) {
             failed = false;
         }
         assertFalse(failed);
@@ -148,28 +148,28 @@ public class JsonValidatorTest extends TestHelper {
         boolean failed = true;
         try {
             new JsonValidator().validate(j2, (JSONObject) null);
-        } catch (AssertionError e) {
+        } catch (NullPointerException e) {
             failed = false;
         }
         assertFalse(failed);
         failed = true;
         try {
             new JsonValidator().validate(j2, (JSONArray) null);
-        } catch (AssertionError e) {
+        } catch (NullPointerException e) {
             failed = false;
         }
         assertFalse(failed);
         failed = true;
         try {
             new JsonValidator().validate(j2, (Response) null);
-        } catch (AssertionError e) {
+        } catch (NullPointerException e) {
             failed = false;
         }
         assertFalse(failed);
         failed = true;
         try {
             new JsonValidator().validate(j2, (String) null);
-        } catch (AssertionError e) {
+        } catch (NullPointerException e) {
             failed = false;
         }
         assertFalse(failed);
