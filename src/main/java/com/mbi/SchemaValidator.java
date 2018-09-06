@@ -18,7 +18,7 @@ final class SchemaValidator {
      * @param schema     json schema.
      * @param jsonObject json object.
      */
-    void validateSchema(final JSONObject schema, final JSONObject jsonObject) {
+    public void validateSchema(final JSONObject schema, final JSONObject jsonObject) {
         validate(schema, jsonObject);
     }
 
@@ -28,7 +28,7 @@ final class SchemaValidator {
      * @param schema    json schema.
      * @param jsonArray json array.
      */
-    void validateSchema(final JSONObject schema, final JSONArray jsonArray) {
+    public void validateSchema(final JSONObject schema, final JSONArray jsonArray) {
         validate(schema, jsonArray);
     }
 
@@ -40,6 +40,7 @@ final class SchemaValidator {
      * @param <T>        {@link org.json.JSONObject} or {@link org.json.JSONArray}.
      * @throws ValidationException if validation failed.
      */
+    @SuppressWarnings("PMD.PreserveStackTrace")
     private <T> void validate(final JSONObject schemaJson, final T json) {
         final Schema schema = getSchema(schemaJson);
         try {

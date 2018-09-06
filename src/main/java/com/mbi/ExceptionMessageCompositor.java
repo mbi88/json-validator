@@ -17,7 +17,8 @@ final class ExceptionMessageCompositor {
      * @param <T>       {@link org.json.JSONObject} or {@link org.json.JSONArray}.
      * @return exception message.
      */
-    <T> String getMessage(final ValidationException exception, final T json) {
+    @SuppressWarnings("PMD.SimplifyStartsWith")
+    public <T> String getMessage(final ValidationException exception, final T json) {
         // Add error message
         String msg = exception.getMessage();
 

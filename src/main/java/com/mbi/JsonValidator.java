@@ -112,6 +112,7 @@ public final class JsonValidator {
      * @param s json as string
      * @return true is json object was passed.
      */
+    @SuppressWarnings("PMD.SimplifyStartsWith")
     private boolean isJsonObject(final String s) {
         return s.startsWith("{");
     }
@@ -122,6 +123,7 @@ public final class JsonValidator {
      * @param s json as string
      * @return true is json array was passed.
      */
+    @SuppressWarnings("PMD.SimplifyStartsWith")
     private boolean isJsonArray(final String s) {
         return s.startsWith("[");
     }
