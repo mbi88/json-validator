@@ -10,15 +10,16 @@ apply plugin: 'jacoco'
 def suitesDir = 'src/test/resources/suites/'
 
 repositories {
-    maven { url "https://jitpack.io" }
-    maven { url "http://repo.maven.apache.org/maven2" }
+    mavenCentral()
+    jcenter()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     implementation group: 'org.json', name: 'json', version: '20190722'
     implementation group: 'io.rest-assured', name: 'rest-assured', version: '4.1.2'
-    implementation group: 'org.testng', name: 'testng', version: '7.1.0'
-    implementation group: 'com.github.everit-org.json-schema', name: 'org.everit.json.schema', version: '1.12.0'
+    implementation group: 'org.testng', name: 'testng', version: '7.2.0'
+    implementation group: 'com.github.everit-org.json-schema', name: 'org.everit.json.schema', version: '1.12.1'
 }
 
 test {
