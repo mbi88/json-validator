@@ -60,7 +60,7 @@ final class SchemaValidator {
      * @throws JSONException if schema is incorrect
      */
     private Schema getSchema(final JSONObject schemaJson) {
-        if (schemaJson.toString().equalsIgnoreCase("{}")) {
+        if ("{}".equalsIgnoreCase(schemaJson.toString())) {
             final var message = String.format("Invalid schema!%nSchema:%n%s", schemaJson.toString(4));
 
             throw new JSONException(message);
