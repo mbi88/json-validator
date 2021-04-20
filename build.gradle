@@ -11,7 +11,6 @@ def suitesDir = 'src/test/resources/suites/'
 
 repositories {
     mavenCentral()
-    jcenter()
     maven { url 'https://jitpack.io' }
 }
 
