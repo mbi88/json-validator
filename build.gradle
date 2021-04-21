@@ -25,7 +25,7 @@ test {
     useTestNG() {
         // Add test suites
         def suitesList = []
-        def dir = new File(suitesDir)
+        def dir = new File(projectDir.absolutePath + '/' + suitesDir)
         dir.eachFileRecurse(FileType.FILES) { file -> suitesList << file }
         suitesList.each { options.suites(it.path) }
 
