@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mbi88/json-validator.svg?branch=master)](https://travis-ci.org/mbi88/json-validator)
+[![Java CI with Gradle](https://github.com/mbi88/json-validator/actions/workflows/gradle.yml/badge.svg)](https://github.com/mbi88/json-validator/actions/workflows/gradle.yml)
 [![codecov](https://codecov.io/gh/mbi88/json-validator/branch/master/graph/badge.svg)](https://codecov.io/gh/mbi88/json-validator)
 
 
