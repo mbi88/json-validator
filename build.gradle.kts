@@ -18,7 +18,7 @@ dependencies {
     implementation("org.testng:testng:7.7.1")
     implementation("org.json:json:20220924")
     implementation("io.rest-assured:rest-assured:5.3.0")
-    implementation("com.github.everit-org.json-schema:org.everit.json.schema:1.14.1")
+    implementation("com.github.everit-org.json-schema:org.everit.json.schema:1.14.2")
 }
 
 tasks.test {
