@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     implementation("org.testng:testng:7.8.0")
-    implementation("org.json:json:20230618")
+    implementation("org.json:json:20231013")
     implementation("io.rest-assured:rest-assured:5.3.2")
     implementation("com.github.everit-org.json-schema:org.everit.json.schema:1.14.3")
 }
