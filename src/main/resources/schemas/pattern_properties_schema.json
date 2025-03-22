@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "patternProperties": {
+    "^foo.*": {
+      "type": "string"
+    },
+    "^bar.*": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false
+}

@@ -9,48 +9,28 @@ class TestHelper {
 
     private final JsonValidator validator = new JsonValidator();
 
-    <T> void checkFail(final JSONObject j1, final T j2) {
-        boolean failed = true;
-
-        if (j2 instanceof String) {
-            try {
-                validator.validate(j1, (String) j2);
-                failed = false;
-            } catch (Throwable ignored) {
+    private boolean tryValidate(final JSONObject schema, final Object object) {
+        try {
+            switch (object) {
+                case String str -> validator.validate(schema, str);
+                case Response rsp -> validator.validate(schema, rsp);
+                case JSONObject jo -> validator.validate(schema, jo);
+                case JSONArray ja -> validator.validate(schema, ja);
+                case null, default -> {
+                    return false;
+                }
             }
+            return true;
+        } catch (Throwable throwable) {
+            return false;
         }
+    }
 
-        if (j2 instanceof Response) {
-            try {
-                validator.validate(j1, (Response) j2);
-                failed = false;
-            } catch (Throwable ignored) {
-            }
-        }
-
-        if (j2 instanceof JSONObject) {
-            try {
-                validator.validate(j1, (JSONObject) j2);
-                failed = false;
-            } catch (Throwable ignored) {
-            }
-        }
-
-        if (j2 instanceof JSONArray) {
-            try {
-                validator.validate(j1, (JSONArray) j2);
-                failed = false;
-            } catch (Throwable ignored) {
-            }
-        }
-
-        if (!failed) throw new AssertionError();
+    <T> void checkFail(final JSONObject schema, final T object) {
+        if (tryValidate(schema, object)) throw new AssertionError("Validation unexpectedly passed");
     }
 
     <T> void checkSuccess(final JSONObject schema, final T object) {
-        if (object instanceof String) validator.validate(schema, (String) object);
-        if (object instanceof Response) validator.validate(schema, (Response) object);
-        if (object instanceof JSONObject) validator.validate(schema, (JSONObject) object);
-        if (object instanceof JSONArray) validator.validate(schema, (JSONArray) object);
+        if (!tryValidate(schema, object)) throw new AssertionError("Validation failed");
     }
 }

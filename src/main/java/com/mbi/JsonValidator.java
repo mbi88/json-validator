@@ -9,63 +9,62 @@ import org.json.JSONObject;
 import static com.mbi.Constants.*;
 
 /**
- * Based on <a href="https://github.com/everit-org/json-schema">JSON Schema Validator</a>.
- * Validates json schema with something of:
- * {@link org.json.JSONObject},
- * {@link org.json.JSONArray},
- * {@link io.restassured.response.Response},
- * {@link java.lang.String}
+ * A universal validator for comparing different types of JSON data against a JSON schema.
+ * Supported types:
+ * - {@link JSONObject}
+ * - {@link JSONArray}
+ * - {@link Response} (from Rest Assured)
+ * - {@link String} (must be valid JSON)
  *
- * @see <a href="http://json-schema.org/">What is json schema</a>
- * @see <a href="https://jsonschema.net/">Where can I create schemas</a>
- * @see <a href="https://github.com/everit-org/json-schema">JSON Schema Validator</a>
+ * @see <a href="https://json-schema.org/">JSON Schema</a>
+ * @see <a href="https://jsonschema.net/">Schema Generator</a>
+ * @see <a href="https://github.com/everit-org/json-schema">Everit JSON Schema Validator</a>
  */
 public final class JsonValidator {
 
+    private final SchemaValidator validator = new SchemaValidator();
+
     /**
-     * Validates {@link org.json.JSONObject} according to json schema.
+     * Validates a JSONObject against a JSON schema.
      *
-     * @param schema schema.
-     * @param json   JSONObject to compare.
-     * @throws AssertionError if null passed
+     * @param schema the JSON schema
+     * @param json   the JSONObject to validate
+     * @throws AssertionError if any argument is null
      */
     public void validate(final JSONObject schema, final JSONObject json) {
         Validate.notNull(schema, JSON_SCHEMA_NULL_ERROR_MESSAGE);
         Validate.notNull(json, VALIDATION_JSON_NULL_ERROR_MESSAGE);
 
-        final Comparator<JSONObject> comparator = new SchemaValidator()::validateSchema;
-
+        final Comparator<JSONObject> comparator = validator::validateSchema;
         comparator.compareWithSchema(schema, json);
     }
 
     /**
-     * Validates {@link org.json.JSONArray} according to json schema.
+     * Validates a JSONArray against a JSON schema.
      *
-     * @param schema schema.
-     * @param json   JSONArray to compare.
-     * @throws AssertionError if null passed
+     * @param schema the JSON schema
+     * @param json   the JSONArray to validate
+     * @throws AssertionError if any argument is null
      */
     public void validate(final JSONObject schema, final JSONArray json) {
         Validate.notNull(schema, JSON_SCHEMA_NULL_ERROR_MESSAGE);
         Validate.notNull(json, VALIDATION_JSON_NULL_ERROR_MESSAGE);
 
-        final Comparator<JSONArray> comparator = new SchemaValidator()::validateSchema;
-
+        final Comparator<JSONArray> comparator = validator::validateSchema;
         comparator.compareWithSchema(schema, json);
     }
 
     /**
-     * Validates {@link io.restassured.response.Response} according to json schema.
-     * Converts rest-assured response to JSONObject/JSONArray. Throws JSONException if conversion fails.
+     * Validates a Rest-Assured Response body against a JSON schema.
      *
-     * @param schema   schema.
-     * @param response rest-assured response to compare.
-     * @throws JSONException  if json is invalid.
-     * @throws AssertionError if null passed
+     * @param schema the JSON schema
+     * @param json   the HTTP response
+     * @throws AssertionError if any argument is null
+     * @throws JSONException  if the response is not valid JSON
      */
-    public void validate(final JSONObject schema, final Response response) {
+    public void validate(final JSONObject schema, final Response json) {
         Validate.notNull(schema, JSON_SCHEMA_NULL_ERROR_MESSAGE);
-        Validate.notNull(response, VALIDATION_JSON_NULL_ERROR_MESSAGE);
+        Validate.notNull(json, VALIDATION_JSON_NULL_ERROR_MESSAGE);
 
         final Comparator<Response> comparator = (schm, rsp) -> {
             if (isJsonObject(rsp.asString())) {
@@ -77,21 +76,20 @@ public final class JsonValidator {
             }
         };
 
-        comparator.compareWithSchema(schema, response);
+        comparator.compareWithSchema(schema, json);
     }
 
     /**
-     * Validates {@link java.lang.String} according to json schema.
-     * Converts string to JSONObject/JSONArray. Throws JSONException if conversion fails.
+     * Validates a raw JSON string against a JSON schema.
      *
-     * @param schema schema.
-     * @param string string to compare.
-     * @throws JSONException  if json is invalid.
-     * @throws AssertionError if null passed
+     * @param schema the JSON schema
+     * @param json   the JSON string
+     * @throws AssertionError if any argument is null
+     * @throws JSONException  if the string is not valid JSON
      */
-    public void validate(final JSONObject schema, final String string) {
+    public void validate(final JSONObject schema, final String json) {
         Validate.notNull(schema, JSON_SCHEMA_NULL_ERROR_MESSAGE);
-        Validate.notNull(string, VALIDATION_JSON_NULL_ERROR_MESSAGE);
+        Validate.notNull(json, VALIDATION_JSON_NULL_ERROR_MESSAGE);
 
         final Comparator<String> comparator = (schm, str) -> {
             if (isJsonObject(str)) {
@@ -103,28 +101,28 @@ public final class JsonValidator {
             }
         };
 
-        comparator.compareWithSchema(schema, string);
+        comparator.compareWithSchema(schema, json);
     }
 
     /**
-     * If passed json as string is json object.
+     * Checks if a string starts with '{', indicating a JSON object.
      *
-     * @param s json as string
-     * @return true is json object was passed.
+     * @param s the input string
+     * @return true if the string is likely a JSON object
      */
     @SuppressWarnings("PMD.SimplifyStartsWith")
     private boolean isJsonObject(final String s) {
-        return s.startsWith("{");
+        return s.trim().startsWith("{");
     }
 
     /**
-     * If passed json as string is json array.
+     * Checks if a string starts with '[', indicating a JSON array.
      *
-     * @param s json as string
-     * @return true is json array was passed.
+     * @param s the input string
+     * @return true if the string is likely a JSON array
      */
     @SuppressWarnings("PMD.SimplifyStartsWith")
     private boolean isJsonArray(final String s) {
-        return s.startsWith("[");
+        return s.trim().startsWith("[");
     }
 }

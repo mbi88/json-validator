@@ -1,0 +1,16 @@
+{
+  "anyOf": [
+    {
+      "type": "object",
+      "required": [
+        "a"
+      ]
+    },
+    {
+      "type": "object",
+      "required": [
+        "b"
+      ]
+    }
+  ]
+}

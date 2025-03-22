@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "not": {
+    "required": [
+      "forbidden"
+    ]
+  }
+}

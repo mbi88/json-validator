@@ -3,7 +3,6 @@ package com.mbi;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,42 +11,23 @@ import org.json.JSONObject;
  */
 final class SchemaValidator {
 
-    /**
-     * Validates json data.
-     *
-     * @param schema     json schema.
-     * @param jsonObject json object.
-     */
-    public void validateSchema(final JSONObject schema, final JSONObject jsonObject) {
-        validate(schema, jsonObject);
-    }
+    private final ExceptionMessageCompositor compositor = new ExceptionMessageCompositor();
 
     /**
-     * Validates json data.
+     * Validates JSON object or array against the given JSON schema.
      *
-     * @param schema    json schema.
-     * @param jsonArray json array.
+     * @param jsonSchema the JSON schema to validate against
+     * @param json       the object to validate (must be JSONObject or JSONArray)
+     * @param <T>        the type of JSON structure
+     * @throws ValidationException if validation fails
      */
-    public void validateSchema(final JSONObject schema, final JSONArray jsonArray) {
-        validate(schema, jsonArray);
-    }
+    public <T> void validateSchema(final JSONObject jsonSchema, final T json) {
+        final var schema = getSchema(jsonSchema);
 
-    /**
-     * Validates json data. Throws exception if validation failed.
-     *
-     * @param schemaJson json schema.
-     * @param json       object to validate.
-     * @param <T>        {@link org.json.JSONObject} or {@link org.json.JSONArray}.
-     * @throws ValidationException if validation failed.
-     */
-    @SuppressWarnings("PMD.PreserveStackTrace")
-    private <T> void validate(final JSONObject schemaJson, final T json) {
-        final var schema = getSchema(schemaJson);
         try {
             schema.validate(json);
         } catch (ValidationException ve) {
-            final var msg = new ExceptionMessageCompositor().getMessage(ve, json);
-
+            final var msg = compositor.getMessage(ve, json);
             throw new ValidationException(ve.getViolatedSchema(), msg, ve.getKeyword(), ve.getSchemaLocation());
         }
     }
@@ -60,10 +40,8 @@ final class SchemaValidator {
      * @throws JSONException if schema is incorrect
      */
     private Schema getSchema(final JSONObject schemaJson) {
-        if ("{}".equalsIgnoreCase(schemaJson.toString())) {
-            final var message = String.format("Invalid schema!%nSchema:%n%s", schemaJson.toString(4));
-
-            throw new JSONException(message);
+        if (schemaJson.isEmpty()) {
+            throw new JSONException("Invalid schema! Schema is empty.");
         }
 
         return SchemaLoader.load(schemaJson);
