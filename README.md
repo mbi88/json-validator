@@ -1,6 +1,7 @@
 [![Java CI with Gradle](https://github.com/mbi88/json-validator/actions/workflows/gradle.yml/badge.svg)](https://github.com/mbi88/json-validator/actions/workflows/gradle.yml)
 [![codecov](https://codecov.io/gh/mbi88/json-validator/branch/master/graph/badge.svg)](https://codecov.io/gh/mbi88/json-validator)
 [![Latest Version](https://img.shields.io/github/v/tag/mbi88/json-validator?label=version)](https://github.com/mbi88/json-validator/releases)
+[![jitpack](https://jitpack.io/v/mbi88/json-validator.svg)](https://jitpack.io/#mbi88/json-validator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 
