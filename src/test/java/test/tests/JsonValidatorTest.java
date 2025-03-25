@@ -138,13 +138,7 @@ public class JsonValidatorTest extends TestHelper {
 
     @Test(dataProvider = "ExtraField", dataProviderClass = DataProviders.class)
     public void testNullSchema(Object o) {
-        boolean failed = true;
-        try {
-            checkSuccess(null, o);
-        } catch (AssertionError e) {
-            failed = false;
-        }
-        assertFalse(failed);
+        assertThrows(AssertionError.class, () -> checkSuccess(null, o));
     }
 
     @Test
