@@ -19,7 +19,7 @@ final class ExceptionMessageCompositor {
      */
     public <T> String getMessage(final ValidationException exception, final T json) {
         // Add error message
-        final StringBuilder builder = new StringBuilder();
+        final var builder = new StringBuilder();
         builder.append(exception.getMessage()).append('\n');
 
         // Add all violations
@@ -27,7 +27,7 @@ final class ExceptionMessageCompositor {
                 .forEach(msg -> builder.append(msg).append('\n'));
 
         // Add validated object as string with indentations
-        final String formattedJson = json.toString().startsWith("{")
+        final var formattedJson = json.toString().startsWith("{")
                 ? new JSONObject(json.toString()).toString(4)
                 : new JSONArray(json.toString()).toString(4);
         builder.append("\nResponse: ").append(formattedJson);

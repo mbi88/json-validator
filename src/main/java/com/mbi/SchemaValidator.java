@@ -22,12 +22,12 @@ final class SchemaValidator {
      * @throws ValidationException if validation fails
      */
     public <T> void validateSchema(final JSONObject jsonSchema, final T json) {
-        final Schema schema = getSchema(jsonSchema);
+        final var schema = getSchema(jsonSchema);
 
         try {
             schema.validate(json);
         } catch (ValidationException ve) {
-            final String msg = compositor.getMessage(ve, json);
+            final var msg = compositor.getMessage(ve, json);
             throw new ValidationException(ve.getViolatedSchema(), msg, ve.getKeyword(), ve.getSchemaLocation());
         }
     }
